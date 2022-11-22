@@ -64,6 +64,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: CI
     steps:
+      - name: Read JSON
+        id: version
+        uses: ashley-taylor/read-json-property-action@v1.0
+        with:
+          path: ./package.json
+          property: version
       - name: Deploy
         uses: appleboy/ssh-action@master
         with:
@@ -74,7 +80,7 @@ jobs:
           script: |
             cd /www/wwwroot/www.suag.top
             rm -rf ./release.tgz
-            wget https://github.com/su4g/ng-action/releases/download/alpha-v${{ CI.steps.version.outputs.value }}/release.tgz
+            wget https://github.com/su4g/ng-action/releases/download/alpha-v${{ steps.version.outputs.value }}/release.tgz
             zxvf release.tgz
 
         
