@@ -5,9 +5,9 @@ name: TestBot
 
 on:
   push:
-    branches: [ "test" ]
+    branches: [ "karma" ]
   pull_request:
-    branches: [ "test" ]
+    branches: [ "karma" ]
 
 jobs:
   build:
