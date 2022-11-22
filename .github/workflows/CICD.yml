@@ -80,10 +80,10 @@ jobs:
         with:
           host: '45.77.25.170'
           username: 'root'
-          password: 'a(W9#4#cv.k_D}D{'
+          password: ${{ secrets.SERVER_PASS }}
           port: '22'
           script: |
-            cd /www/wwwroot/www.suag.top
+            cd ${{ secrets.DEPLOY_PATH }}
             rm -rf ./release.tgz
             wget https://github.com/su4g/ng-action/releases/download/alpha-v${{ steps.version.outputs.value }}/release.tgz
             tar -zxvf release.tgz --strip-components=3

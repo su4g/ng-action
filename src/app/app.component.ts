@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CI_CODE, TEST_CODE } from './code';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'github-action-guide-ng';
+
+  ci = CI_CODE;
+
+  test = TEST_CODE;
 }
