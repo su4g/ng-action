@@ -16,8 +16,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
-      # - run: npm ci
-      # - run: npm test -- --watch=false --browsers=ChromeHeadless
+      - run: npm ci
+      - run: npm test -- --watch=false --browsers=ChromeHeadless
   CI:
     runs-on: ubuntu-latest
     needs: test
@@ -27,7 +27,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
-          cache: 'npm'
       - run: |
           npm ci
           npm run build
@@ -75,5 +74,7 @@ jobs:
           script: |
             cd /www/wwwroot/www.suag.top
             rm -rf ./release.tgz
+            wget https://github.com/su4g/ng-action/releases/download/alpha-v${{ CI.steps.version.outputs.value }}/release.tgz
+            zxvf release.tgz
 
         
