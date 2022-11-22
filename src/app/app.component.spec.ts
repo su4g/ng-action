@@ -30,6 +30,6 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('github-action-guide-ng app is running!');
+    expect(compiled.querySelector('#realTitle')?.textContent).toContain('This App CI/CD with Github Action');
   });
 });
