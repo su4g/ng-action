@@ -23,7 +23,7 @@ jobs:
   CI :
     name: Package and Create Release
     runs-on: ubuntu-latest
-    needs: test
+    # needs: test
     steps:
       - uses: actions/checkout@v3
       - name: uni test
