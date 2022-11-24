@@ -9,17 +9,17 @@ on:
     branches: [ "release" ]
 
 jobs:
-  test:
-    name: Run Angular Uni Test
-    runs-on: ubuntu-latest
-    steps: 
-      - uses: actions/checkout@v3
-      - name: uni test
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
-      - run: npm ci
-      - run: npm test -- --watch=false --browsers=ChromeHeadless
+  # test:
+  #   name: Run Angular Uni Test
+  #   runs-on: ubuntu-latest
+  #   steps: 
+  #     - uses: actions/checkout@v3
+  #     - name: uni test
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 16.x
+  #     - run: npm ci
+  #     - run: npm test -- --watch=false --browsers=ChromeHeadless
   CI :
     name: Package and Create Release
     runs-on: ubuntu-latest
