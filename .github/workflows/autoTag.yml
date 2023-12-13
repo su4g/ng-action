@@ -27,9 +27,26 @@ jobs:
       - uses: hmarr/auto-approve-action@v3
         with:
           review-message: 'Auto approve sync PRs to auto merge them'
-  autoRelease:
+
+
+  autoMerge:
     if: startsWith(github.head_ref, 'release-auto-')
     needs: [autoApprove]
+    runs-on: ubuntu-latest
+    steps:
+      - id: autoMerge
+        name: autoMerge
+        uses: 'pascalgn/automerge-action@v0.15.5'
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+          MERGE_LABELS: ''
+          MERGE_FORKS: 'false'
+          MERGE_RETRIES: '20'
+          MERGE_RETRY_SLEEP: '60000'
+
+  autoRelease:
+    if: startsWith(github.head_ref, 'release-auto-')
+    needs: [autoMerge]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -57,20 +74,5 @@ jobs:
           release_name: ${{ steps.version.outputs.value }}
           draft: false # 是否是草稿
           prerelease: false # 是否是预发布
-
-  autoMerge:
-    if: startsWith(github.head_ref, 'release-auto-')
-    needs: [autoRelease]
-    runs-on: ubuntu-latest
-    steps:
-      - id: autoMerge
-        name: autoMerge
-        uses: 'pascalgn/automerge-action@v0.15.5'
-        env:
-          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-          MERGE_LABELS: ''
-          MERGE_FORKS: 'false'
-          MERGE_RETRIES: '20'
-          MERGE_RETRY_SLEEP: '60000'
 
         
