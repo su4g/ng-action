@@ -6,6 +6,7 @@ run-name: Publish Release by @${{ github.actor }}
 
 on:
   pull_request:
+    branches: [ "master" ]
     types:
       - opened
       - reopened
@@ -59,7 +60,7 @@ jobs:
 
   autoMerge:
     if: startsWith(github.head_ref, 'release-auto-')
-    needs: [publish]
+    needs: [autoRelease]
     runs-on: ubuntu-latest
     steps:
       - id: autoMerge
