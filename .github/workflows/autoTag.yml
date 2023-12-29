@@ -9,44 +9,10 @@ on:
     branches:
       - master
   pull_request:
-    branches: [ 'master' ]
     types:
-      - opened
       - closed
-  pull_request_review:
-    types:
-      - submitted
-  check_suite:
-    types:
-      - completed
 
 jobs:
-  autoApprove:
-    if: startsWith(github.head_ref, 'release-*')
-    runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-    steps:
-      - uses: hmarr/auto-approve-action@v3
-        with:
-          review-message: 'Auto approve sync PRs to auto merge them'
-
-
-  autoMerge:
-    if: startsWith(github.head_ref, 'release-*')
-    needs: [autoApprove]
-    runs-on: ubuntu-latest
-    steps:
-      - id: autoMerge
-        name: autoMerge
-        uses: 'pascalgn/automerge-action@v0.15.5'
-        env:
-          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-          MERGE_LABELS: ''
-          MERGE_FORKS: 'false'
-          MERGE_RETRIES: '20'
-          MERGE_RETRY_SLEEP: '60000'
-
   autoRelease:
     if: ${{ github.event.pull_request.base.ref == 'master' && github.event.pull_request.head.ref == 'release-*' }}
     runs-on: ubuntu-latest
