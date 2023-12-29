@@ -1,6 +1,6 @@
 {
   "name": "github-action-guide-ng",
-  "version": "1.0.1-rc.2",
+  "version": "1.0.1-rc.3",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
