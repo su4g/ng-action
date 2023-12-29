@@ -1,78 +1,78 @@
-# # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-# name: Auto Tag
-# run-name: Publish Release by @${{ github.actor }}
+name: Auto Tag
+run-name: Publish Release by @${{ github.actor }}
 
-# on:
-#   push:
-#     branches:
-#       - release-auto-*
-#   pull_request:
-#     types:
-#       - closed
-#     branches:
-#       - 'master'
-#   check_suite:
-#     types:
-#       - completed
+on:
+  push:
+    branches:
+      - release-*
+  pull_request:
+    types:
+      - closed
+    branches:
+      - 'master'
+  check_suite:
+    types:
+      - completed
 
-# jobs:
-#   autoApprove:
-#     if: startsWith(github.head_ref, 'release-auto-')
-#     runs-on: ubuntu-latest
-#     permissions:
-#       pull-requests: write
-#     steps:
-#       - uses: hmarr/auto-approve-action@v3
-#         with:
-#           review-message: 'Auto approve sync PRs to auto merge them'
+jobs:
+  autoApprove:
+    if: startsWith(github.head_ref, 'release-auto-')
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: hmarr/auto-approve-action@v3
+        with:
+          review-message: 'Auto approve sync PRs to auto merge them'
 
 
-#   autoMerge:
-#     if: startsWith(github.head_ref, 'release-auto-')
-#     needs: [autoApprove]
-#     runs-on: ubuntu-latest
-#     steps:
-#       - id: autoMerge
-#         name: autoMerge
-#         uses: 'pascalgn/automerge-action@v0.15.5'
-#         env:
-#           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-#           MERGE_LABELS: ''
-#           MERGE_FORKS: 'false'
-#           MERGE_RETRIES: '20'
-#           MERGE_RETRY_SLEEP: '60000'
+  autoMerge:
+    if: startsWith(github.head_ref, 'release-auto-')
+    needs: [autoApprove]
+    runs-on: ubuntu-latest
+    steps:
+      - id: autoMerge
+        name: autoMerge
+        uses: 'pascalgn/automerge-action@v0.15.5'
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+          MERGE_LABELS: ''
+          MERGE_FORKS: 'false'
+          MERGE_RETRIES: '20'
+          MERGE_RETRY_SLEEP: '60000'
 
-#   autoRelease:
-#     if: startsWith(github.head_ref, 'release-auto-')
-#     needs: [autoMerge]
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
-#         with:
-#           ref: ${{ github.head_ref }}
-#       - name: Setup Node.js
-#         uses: actions/setup-node@v1
-#         with:
-#           node-version: 16
-#           registry-url: 'https://registry.npmjs.org'   
-#       - name: Read JSON
-#         id: version
-#         uses: ashley-taylor/read-json-property-action@v1.0
-#         with:
-#           path: ./package.json
-#           property: version
-#       - name: Create Release
-#         id: create_release
-#         uses: actions/create-release@master
-#         env:
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#         with:
-#           tag_name: ${{ steps.version.outputs.value }}
-#           release_name: ${{ steps.version.outputs.value }}
-#           draft: false # 是否是草稿
-#           prerelease: false # 是否是预发布
+  autoRelease:
+    if: startsWith(github.head_ref, 'release-auto-')
+    needs: [autoMerge]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+          registry-url: 'https://registry.npmjs.org'   
+      - name: Read JSON
+        id: version
+        uses: ashley-taylor/read-json-property-action@v1.0
+        with:
+          path: ./package.json
+          property: version
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.version.outputs.value }}
+          release_name: ${{ steps.version.outputs.value }}
+          draft: false # 是否是草稿
+          prerelease: false # 是否是预发布
 
         
