@@ -1,0 +1,45 @@
+name: Release Auto
+run-name: Publish Release by @${{ github.actor }}
+
+on:
+  push:
+    branches:
+      - release-auto-*
+  pull_request:
+    branches: ['master']
+    types:
+      - closed
+  check_suite:
+    types:
+      - completed
+
+jobs:
+  autoRelease:
+    if: startsWith(github.head_ref, 'release-')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+          registry-url: 'https://registry.npmjs.org'
+      - name: Read JSON
+        id: version
+        uses: ashley-taylor/read-json-property-action@v1.0
+        with:
+          path: ./package.json
+          property: version
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.version.outputs.value }}
+          release_name: ${{ steps.version.outputs.value }}
+          draft: false
+          prerelease: false
