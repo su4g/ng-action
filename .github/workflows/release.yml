@@ -4,9 +4,9 @@ run-name: Publish Release by @${{ github.actor }}
 on:
   push:
     branches:
-      - release-v*
+      - master
   pull_request:
-    branches: ['master']
+    branches: ['release-*']
     types:
       - closed
   check_suite:
