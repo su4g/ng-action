@@ -1,20 +1,20 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Auto Tag
+name: Release Auto
 run-name: Publish Release by @${{ github.actor }}
 
 on:
   push:
     branches:
-      - master
+      - release-*
   pull_request:
+    branches: ['master']
     types:
       - closed
+  check_suite:
+    types:
+      - completed
 
 jobs:
   autoRelease:
-    if: ${{ github.event.pull_request.base.ref == 'master' && github.event.pull_request.head.ref == 'release-*' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -25,7 +25,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 16
-          registry-url: 'https://registry.npmjs.org'   
+          registry-url: 'https://registry.npmjs.org'
       - name: Read JSON
         id: version
         uses: ashley-taylor/read-json-property-action@v1.0
@@ -40,7 +40,5 @@ jobs:
         with:
           tag_name: ${{ steps.version.outputs.value }}
           release_name: ${{ steps.version.outputs.value }}
-          draft: false # 是否是草稿
-          prerelease: false # 是否是预发布
-
-        
+          draft: false
+          prerelease: false
