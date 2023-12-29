@@ -5,14 +5,14 @@ name: Auto Tag
 run-name: Publish Release by @${{ github.actor }}
 
 on:
+  push:
+    branches:
+      - release-auto-*
   pull_request:
-    branches: [ "master" ]
     types:
-      - opened
-      - reopened
-  pull_request_review:
-    types:
-      - submitted
+      - closed
+    branches:
+      - 'master'
   check_suite:
     types:
       - completed
