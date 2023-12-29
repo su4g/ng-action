@@ -7,19 +7,22 @@ run-name: Publish Release by @${{ github.actor }}
 on:
   push:
     branches:
-      - release-*
+      - master
   pull_request:
+    branches: [ "release-*" ]
     types:
+      - opened
       - closed
-    branches:
-      - 'master'
+  pull_request_review:
+    types:
+      - submitted
   check_suite:
     types:
       - completed
 
 jobs:
   autoApprove:
-    if: startsWith(github.head_ref, 'release-auto-')
+    if: startsWith(github.head_ref, 'release-*')
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
