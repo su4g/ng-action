@@ -12,4 +12,6 @@ export class AppComponent {
   ci = CI_CODE;
 
   test = TEST_CODE;
+
+  aaaa = 1;
 }
