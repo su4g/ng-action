@@ -4,7 +4,7 @@ run-name: Publish Release by @${{ github.actor }}
 on:
   push:
     branches:
-      - release-auto-*
+      - release-v*
   pull_request:
     branches: ['master']
     types:
@@ -15,7 +15,6 @@ on:
 
 jobs:
   autoRelease:
-    if: startsWith(github.head_ref, 'release-')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
